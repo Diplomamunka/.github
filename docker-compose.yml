@@ -1,0 +1,38 @@
+name: bookstore
+
+services:
+  frontend:
+    container_name: frontend
+    restart: always
+    image: frontend
+    build:
+      context: ./bookstore-frontend
+      dockerfile: ./Dockerfile
+    ports:
+      - '4200:80'
+    depends_on:
+      - backend
+  backend:
+    container_name: backend
+    restart: always
+    image: backend
+    build:
+      context: ./bookstore-backend
+      dockerfile: ./Dockerfile
+    ports:
+      - '8080:8080'
+    depends_on:
+      - postgres
+  postgres:
+    container_name: database
+    restart: always
+    image: postgres:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - /bookstore-backend/.env
+    ports:
+      - '5432:5432'
+
+volumes:
+  postgres_data:
