@@ -23,6 +23,8 @@ services:
       - '8080:8080'
     depends_on:
       - postgres
+    volumes:
+      - backend_data:/bookstore
   postgres:
     container_name: database
     restart: always
@@ -36,3 +38,4 @@ services:
 
 volumes:
   postgres_data:
+  backend_data:
